@@ -62,10 +62,8 @@ public class DrawGrid {
                     }
 
                     cont[0] = cont[0] + dimension;
-                    System.out.println("contx" + cont[0]);
                 }
                 cont[1] = cont[1] + dimension;
-                System.out.println("conty" + cont[1]);
                 tempx = 0;
                 tempy += dimension;
             }

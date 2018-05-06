@@ -5,51 +5,42 @@
  */
 package domain;
 
-
 import java.io.Serializable;
-import java.util.ArrayList;
-import javafx.scene.image.Image;
 
 /**
  * @author Steven
  * @author Eyleen
  */
 public class Project implements Serializable {
-    
-  //  private Image image;
-  //  private Image useImage;
-    private String image;
-    private String useImage;
+
+    private byte[] image;
+    private byte[] useImage;
     private int dimension;
     private int sizeMosaic;
 
     public Project() {
-        this.image = "";
-        this.useImage = "";
-        this.dimension = 0;
-        this.sizeMosaic = 0;
     }
 
-    public Project(String image, String useImage, int dimension, int sizeMosaic) {
+    public Project(byte[] image, byte[] useImage, int dimension, int sizeMosaic) {
         this.image = image;
         this.useImage = useImage;
         this.dimension = dimension;
         this.sizeMosaic = sizeMosaic;
     }
 
-    public String getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 
-    public String getUseImage() {
+    public byte[] getUseImage() {
         return useImage;
     }
 
-    public void setUseImage(String useImage) {
+    public void setUseImage(byte[] useImage) {
         this.useImage = useImage;
     }
 
@@ -69,10 +60,4 @@ public class Project implements Serializable {
         this.sizeMosaic = sizeMosaic;
     }
 
-    @Override
-    public String toString() {
-        return "Project{" + "image=" + image + ", useImage=" + useImage + ", dimension=" + dimension + ", sizeMosaic=" + sizeMosaic + '}';
-    }
-    
-    
 }

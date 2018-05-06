@@ -8,6 +8,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,18 +18,8 @@ import java.io.ObjectOutputStream;
  */
 public class ProjectFile {
 
-    ObjectInputStream ois;
-    ObjectOutputStream oos;
-    Project project;
-    //File file;
-
-    //metodo en el que se crean los archivos serializables
-    public ProjectFile() throws FileNotFoundException, IOException {
-        // file=new File("Project.obj");
-      //  ois = new ObjectInputStream(new FileInputStream(file));
-        // oos = new ObjectOutputStream(new FileOutputStream(file));
-
-    }
+    private ObjectInputStream ois;
+    private ObjectOutputStream oos;
 
     //metodo que escribe el archivo
     public void newProjectFile(Project project, File file) throws IOException {
@@ -37,16 +29,18 @@ public class ProjectFile {
         oos.close();
     }
 
-    public static void lecturaBinario() {
-        /*  try{
-         Project auxi=(Project)ois.readObject();//casting apersona, aqui se lee el primer onjeto
-         while(auxi!=null){
-             
-         }
-         ois.close();
-    }catch(Exception e2){
-        System.out.println("Error de E/S");
-    }*/
+    public Project fileRead(File file) throws FileNotFoundException, IOException {
+        ois = new ObjectInputStream(new FileInputStream(file));
+        Project loadingProject;
+        try {
+            loadingProject = (Project) ois.readObject();
+            ois.close();
+            return loadingProject;
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ProjectFile.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
     }
 
 }

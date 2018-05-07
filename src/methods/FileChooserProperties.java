@@ -9,7 +9,7 @@ import java.io.File;
 import javafx.stage.FileChooser;
 
 /**
- *
+ * @author Steven
  * @author Eyleen
  */
 public class FileChooserProperties {

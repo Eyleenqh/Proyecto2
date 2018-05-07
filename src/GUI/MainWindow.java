@@ -224,11 +224,11 @@ public class MainWindow extends Application {
         primaryStage.setScene(this.scene);
     }
 
-    //Evento que ocurre cuando se va a cerrar el programa
+    //Evento que ocurre cuando se va a cerrar la ventana
     EventHandler<WindowEvent> closeAction = new EventHandler<WindowEvent>() {
         @Override
         public void handle(WindowEvent event) {
-            /*se validad si los canvas estan visibles y 
+            /*se valida si los canvas estan visibles y 
             si saveCondition retorna un false(lo que signifca que el estado del proyecto no ha sido guardado)*/
             if (pane.isVisible() && pane2.isVisible()) {
                 if (!saveCondition) {
@@ -245,7 +245,7 @@ public class MainWindow extends Application {
         @Override
         public void handle(ActionEvent event) {
             String text = pixelsQuantity.getText();
-            //valida el campo de texto que contiene el tamanio de los pixel no este vacio y que sea mayor a 50
+            //valida el campo de texto que contiene el tamanio de los pixeles, que no este vacio y que sea mayor a 50
             if (pixelsQuantity.getText().isEmpty() || Integer.parseInt(pixelsQuantity.getText()) < 50) {
                 alert.setContentText("Insert a valid pixel's cuantity. (Minimum: 50 pixels)");
                 alert.setHeaderText(null);
@@ -264,7 +264,7 @@ public class MainWindow extends Application {
         }
     };
 
-    //Evento de boton que permite guardar lo que se encuentra en el canvas2 como una imagen PNG
+    //Evento de boton que permite guardar lo que se encuentra en el canvas2 como una imagen en formato PNG
     EventHandler<ActionEvent> saveAction = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
@@ -277,7 +277,7 @@ public class MainWindow extends Application {
                 alert.setHeaderText(null);
                 alert.showAndWait();
             } else {
-                //Se obtiene lo que contiene el canvas2 para guardarlo en una variabke auxiliar
+                //Se obtiene lo que contiene el canvas2 para guardarlo en una variable auxiliar
                 writable = new WritableImage((int) canvas2.getWidth(), (int) canvas2.getHeight());
                 Image canvasImageAux = canvas2.snapshot(new SnapshotParameters(), writable);
                 int sizeMosaic = Integer.parseInt(mosaicSize.getText());
@@ -290,7 +290,7 @@ public class MainWindow extends Application {
                     //dibuja la imagen en el canvas
                     gc2.drawImage(canvasImageAux, 0, 0);
                 } else {
-                    //Se obtiene lo que contiene el canvas2 ya con los bloques eliminado
+                    //Se obtiene lo que contiene el canvas2 ya con los bloques eliminados
                     writable = new WritableImage((int) canvas2.getWidth(), (int) canvas2.getHeight());
                     SnapshotParameters sp = new SnapshotParameters();
                     sp.setFill(Color.TRANSPARENT);
@@ -326,7 +326,7 @@ public class MainWindow extends Application {
                 int sizeMosaic = Integer.parseInt(mosaicSize.getText());
                 pixels = Integer.parseInt(pixelsQuantity.getText());
 
-                //valida que los pixeles sea mayor a 50 y menor a 2160
+                //valida que los pixeles sean mayor a 50 y menor a 2160
                 if (Integer.parseInt(pixelsQuantity.getText()) >= 50 && sizeMosaic >= pixels * 2 && sizeMosaic <= 2160) {
                     mosaicSize.setDisable(true);
                     pixelsQuantity.setDisable(true);
@@ -356,13 +356,13 @@ public class MainWindow extends Application {
         }
     };
 
-    //permite crear un nuevo proyecto
+    //evento de boton que permite crear un nuevo proyecto
     EventHandler<ActionEvent> newProjectAction = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
             gc.clearRect(0, 0, 4096, 2160);
             gc2.clearRect(0, 0, 4096, 2160);
-            //Habilita los botones y cuadros de textos bloqueados, limpia los canvas y vuelve nulas las varible que lo requiren
+            //Habilita los botones y cuadros de textos bloqueados, limpia los canvas y vuelve nulas las varibles que lo requiren
             mosaicSize.setDisable(false);
             pixelsQuantity.setDisable(false);
             size.setDisable(false);
@@ -378,6 +378,7 @@ public class MainWindow extends Application {
         }
     };
 
+    //Evento de boton que carga los proyectos guardados anteriormente
     EventHandler<ActionEvent> loadProjectAction = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
@@ -393,7 +394,7 @@ public class MainWindow extends Application {
                 try {
                     projectFile = new ProjectFile();
                     //se verifica si ya se instancio un objecto de tipo project
-                    //si ya se creo lo clona, si no lo instancia
+                    //si ya se creo lo clona, si no, lo instancia
                     if (saveCondition) {
                         //se clona el objecto
                         Project projectTemp = project.clone();
@@ -433,9 +434,22 @@ public class MainWindow extends Application {
                     image = useImage;
                     imageView = new ImageView(image);
                     snapshot = new SnapshotParameters();
+                    
+                    //ajusta el tamanio de los canvas
+                    canvas1.setHeight(2160);
+                    canvas1.setWidth(4096);
+                    canvas2.setHeight(2160);
+                    canvas2.setWidth(4096);
+                    
                     //limpia los canvas
                     gc.clearRect(0, 0, 4096, 2160);
                     gc2.clearRect(0, 0, 4096, 2160);
+                    
+                    //ajusta el tamanio de los canvas
+                    canvas1.setHeight(image.getHeight());
+                    canvas1.setWidth(image.getWidth());
+                    canvas2.setHeight(mosaicImage.getHeight());
+                    canvas2.setWidth(mosaicImage.getWidth());
                     //dibuja las imagenes sobre los canvas
                     gc.drawImage(image, 0, 0);
                     gc2.drawImage(mosaicImage, 0, 0);
@@ -473,14 +487,14 @@ public class MainWindow extends Application {
             //valida que los scrollPane sean visibles
             if (pane.isVisible() && pane2.isVisible()) {
                 int sizeMosaic = Integer.parseInt(mosaicSize.getText());
-                //obtiene lo que s encuentra en el canvas como varible tipo imagen
+                //obtiene lo que se encuentra en el canvas como varible tipo imagen
                 writable = new WritableImage((int) canvas2.getWidth(), (int) canvas2.getHeight());
                 Image canvasImage = canvas2.snapshot(new SnapshotParameters(), writable);
 
                 fileChooserProperties.configureFileChooser4(fileChooser4);
                 File file = fileChooser4.showSaveDialog(null);
                 //se verifica si ya se instancio un objecto de tipo project
-                //si ya se creo lo clona, si no lo instancia
+                //si ya se creo lo clona, si no, lo instancia
                 if (!saveCondition) {
                     //instacia el proyecto
                     project = new ProjectClone();
@@ -522,7 +536,7 @@ public class MainWindow extends Application {
         }
     };
 
-    //evento que llama al metodo que rota el bloque o pixel hacia la derecha
+    //evento que llama al metodo que rota el bloque hacia la derecha
     EventHandler<ActionEvent> rightRotateAction = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
@@ -530,7 +544,7 @@ public class MainWindow extends Application {
         }
     };
 
-    //evento que llama al metodo que rota el bloque o pixel hacia la izquierda
+    //evento que llama al metodo que rota el bloque hacia la izquierda
     EventHandler<ActionEvent> leftRotateAction = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
@@ -538,7 +552,7 @@ public class MainWindow extends Application {
         }
     };
 
-    //evento que llama al metodo que voltea el bloque o pixel verticalmente
+    //evento que llama al metodo que voltea el bloque verticalmente
     EventHandler<ActionEvent> verticalFlipAction = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
@@ -546,7 +560,7 @@ public class MainWindow extends Application {
         }
     };
 
-    //evento que llama al metodo que voltea el bloque o pixel horizontalmente
+    //evento que llama al metodo que voltea el bloque horizontalmente
     EventHandler<ActionEvent> horizontalFlipAction = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
@@ -554,7 +568,7 @@ public class MainWindow extends Application {
         }
     };
 
-    //evento que llama al metodo que borra el bloque o pixel
+    //evento que llama al metodo que borra el bloque
     EventHandler<ActionEvent> deleteAction = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
@@ -563,33 +577,33 @@ public class MainWindow extends Application {
         }
     };
 
-    //Evento del mouse que permite seleecionar una bloque o pixel
+    //Evento del mouse que permite seleecionar una bloque
     EventHandler<MouseEvent> canvas1MouseEvent = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
             if (e.getButton() == MouseButton.PRIMARY) {
-                //obtiene las coordenadas de donde se activo el evento y pixel ingresado por el usuario
+                //obtiene las coordenadas de donde se activo el evento y tamanio en pixeles ingresado por el usuario
                 int x = (int) e.getX();
                 int y = (int) e.getY();
                 int pixel = Integer.parseInt(pixelsQuantity.getText());
-                //llama al meto que selecciona el bloque o pixel unicado en las coordenadas seleccionadas
+                //llama al meto que selecciona el bloque unicado en las coordenadas seleccionadas
                 tempImage = imageManipulation.selectedImage(image, pixel, x, y);
             }
         }
     };
 
-    //Evento del mouse que colocar un bloque o pixel y manipularlo 
+    //Evento del mouse que colocar un bloque y manipularlo 
     EventHandler<MouseEvent> canvas2MouseEvent = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
             int dimension = Integer.parseInt(pixelsQuantity.getText());
-            //si el boton primario es seleccionado la imagen contenida el tempImage es colocada en el mosaico
+            //si el boton primario es seleccionado la imagen contenida en tempImage es colocada en el mosaico
             if (e.getButton() == MouseButton.PRIMARY) {
                 //obtiene las coordenadas de donde se activo el evento 
                 int x = (int) e.getX();
                 int y = (int) e.getY();
                 trueFalse[x / dimension][y / dimension] = true;
-                //lla,a al metodo que pegara la imagen
+                //llama al metodo que pegara la imagen
                 imageManipulation.pasteImage(gc2, tempImage, dimension, x, y);
             }
 
@@ -615,7 +629,7 @@ public class MainWindow extends Application {
         try {
             //se limpia el canvas
             gc.clearRect(0, 0, 4096, 2160);
-            //se asigna la imagen selecciona a una varible
+            //se asigna la imagen seleccionada a una varible
             this.image = new Image(new FileInputStream(file.getPath()));
             this.snapshot = new SnapshotParameters();
 
@@ -624,14 +638,14 @@ public class MainWindow extends Application {
             double xp = image.getWidth();
             double yp = image.getHeight();
 
-            //valida que el tamanio de la imagen sea mayor a la de los pixeles, sino no la abre
+            //valida que el tamanio de la imagen sea mayor a la de los pixeles, si no, no la abre
             if (xp > pixels && yp > pixels) {
                 this.canvas1.setWidth(4096);
                 this.canvas1.setHeight(2160);
                 //dibuja la imagen y la cuadricula en el canvas
                 gc.drawImage(this.image, 0, 0);
                 sizeCanvas1 = dg.drawGrid1(gc, pixels, xp, yp);
-                //establece el tamanio del cavas deacuerdo con la el de la cuadricula
+                //establece el tamanio del cavas de acuerdo con el de la cuadricula
                 this.canvas1.setWidth(sizeCanvas1[0]);
                 this.canvas1.setHeight(sizeCanvas1[1]);
                 this.canvas1.setDisable(false);
@@ -649,7 +663,7 @@ public class MainWindow extends Application {
 
     //metodo que genera una matriz de tipo booleana 
     public void generateLogicMatrix(int sizeCanvas2, int pixels) {
-        //crear la matriz deacuerdo al tamanio del canvas
+        //crea la matriz deacuerdo al tamanio del canvas
         trueFalse = new boolean[(sizeCanvas2 / pixels) + 1][(sizeCanvas2 / pixels) + 1];
         //convierte todos los valores a "false"
         for (int i = 0; i < trueFalse.length; i++) {
@@ -659,9 +673,9 @@ public class MainWindow extends Application {
         }
     }
 
-    //metodo que le pide al usuario una desicion sobre si quiere guardar estado del proyecto,salir o no hacer nada.
+    //metodo que pregunta al usuario si quiere guardar el estado del proyecto,salir o cancelar.
     public boolean closeWindow() {
-        //Ventana que se muestra para obtener respuesta del usuario sobre lo que se desea hacer
+        //Ventana que se muestra para obtener la respuesta del usuario sobre lo que se desea hacer
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
         alert.setHeaderText("Save the project?");

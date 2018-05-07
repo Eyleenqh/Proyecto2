@@ -129,11 +129,11 @@ public class DrawGrid {
         } else {
             //verifica que no se cambien de columna hasta que se hayan completado las lines
             if (this.tempY <= size) {
-                //valida que si el valor de trueFalse en la posicion "i" e "j" sea false para borrar ese bloque
+                //valida que si el valor de trueFalse en la posicion "i" y "j" sea false para borrar ese bloque
                 if (!trueFalse[i][j]) {
                     gc.clearRect(i * pixels, j * pixels, pixels, pixels);
                 }
-                //sino solo aumenta para seguir en la siguiente fila
+                //si no, solo aumenta para seguir en la siguiente fila
                 this.tempY += pixels;
                 return drawGrid3(gc, pixels, size, j + 1, i, trueFalse);
             } else {

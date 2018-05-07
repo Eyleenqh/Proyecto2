@@ -5,7 +5,6 @@
  */
 package mosaicmakervargasquirossemestreianno2018;
 
-
 import GUI.MainWindow;
 import javafx.application.Application;
 

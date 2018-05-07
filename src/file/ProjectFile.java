@@ -21,7 +21,7 @@ public class ProjectFile {
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
 
-    //metodo que escribe el archivo
+    //metodo que escribe el estado del proyecto en un archivo
     public void newProjectFile(Project project, File file) throws IOException {
         oos = new ObjectOutputStream(new FileOutputStream(file));
         oos.writeObject(project);
@@ -29,13 +29,13 @@ public class ProjectFile {
         oos.close();
     }
 
-    public Project fileRead(File file) throws FileNotFoundException, IOException {
+    //metodo que lee el archivo que contiene el estado del proyecto
+    public Project fileRead(File file, Project p) throws FileNotFoundException, IOException {
         ois = new ObjectInputStream(new FileInputStream(file));
-        Project loadingProject;
         try {
-            loadingProject = (Project) ois.readObject();
+            p = (Project) ois.readObject();
             ois.close();
-            return loadingProject;
+            return p;
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ProjectFile.class.getName()).log(Level.SEVERE, null, ex);
         }

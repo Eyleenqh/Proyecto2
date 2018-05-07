@@ -27,31 +27,37 @@ import javax.imageio.ImageIO;
 public class ImageManipulation {
 
     private Image imagePiece;
-    private ImageView imageView; 
-    private SnapshotParameters snapshot = new SnapshotParameters(); 
+    private ImageView imageView;
+    private SnapshotParameters snapshot = new SnapshotParameters();
 
-    public Image selectedImage(Image image, int dimension, int x, int y) {
-        int cutX = (x / dimension) * dimension;
-        int cutY = (y / dimension) * dimension;
+    //copia el cuadrado seleccionado de la imagen
+    public Image selectedImage(Image image, int pixels, int x, int y) {
+        int cutX = (x / pixels) * pixels;
+        int cutY = (y / pixels) * pixels;
         imageView = new ImageView(image);
-        snapshot.setViewport(new Rectangle2D(cutX, cutY, dimension, dimension));
+        snapshot.setViewport(new Rectangle2D(cutX, cutY, pixels, pixels));
         return imageView.snapshot(snapshot, null);
     }
 
-    public void pasteImage(GraphicsContext gc2, Image image, int dimension, int x, int y) {
-        int pasteX = (x / dimension) * dimension;
-        int pasteY = (y / dimension) * dimension;
+    //coloca la imagen en la posicion dada por "pasteX" y "pasteY"
+    public void pasteImage(GraphicsContext gc2, Image image, int pixels, int x, int y) {
+        int pasteX = (x / pixels) * pixels;
+        int pasteY = (y / pixels) * pixels;
         gc2.drawImage(image, pasteX, pasteY);
     }
 
     //Metodo que rota la imagen a la derecha
-    public void rotateRight(Image im, int x, int y, int dimension, GraphicsContext gc2) {
+    public void rotateRight(Image im, int x, int y, int pixels, GraphicsContext gc2) {
+        //permite que la imagen se pueda editar
         imageView = new ImageView(im);
-        snapshot.setViewport(new Rectangle2D(x, y, dimension, dimension));
+        //selecciona el bloque que se va a rotar
+        snapshot.setViewport(new Rectangle2D(x, y, pixels, pixels));
         im = imageView.snapshot(snapshot, null);
         imageView.setImage(im);
+        //rota la imagen
         imageView.setRotate(imageView.getRotate() + 90);
 
+        //coloca la imagen en el mismo lugar donde fue seleccionada
         SnapshotParameters params = new SnapshotParameters();
         params.setFill(Color.TRANSPARENT);
         Image rotatedImage = imageView.snapshot(params, null);
@@ -62,13 +68,17 @@ public class ImageManipulation {
     }
 
     //Metodo que rota a la izquierda
-    public void rotateLeft(Image im, int x, int y, int dimension, GraphicsContext gc2) {
+    public void rotateLeft(Image im, int x, int y, int pixels, GraphicsContext gc2) {
+        //permite que la imagen se pueda editar
         imageView = new ImageView(im);
-        snapshot.setViewport(new Rectangle2D(x, y, dimension, dimension));
+        //selecciona el bloque que se va a rotar
+        snapshot.setViewport(new Rectangle2D(x, y, pixels, pixels));
         im = imageView.snapshot(snapshot, null);
         imageView.setImage(im);
+        //rota la imagen
         imageView.setRotate(imageView.getRotate() - 90);
 
+        //coloca la imagen en el mismo lugar donde fue seleccionada
         SnapshotParameters params = new SnapshotParameters();
         params.setFill(Color.TRANSPARENT);
         Image rotatedImage = imageView.snapshot(params, null);
@@ -79,36 +89,45 @@ public class ImageManipulation {
     }
 
     //Metodo que voltea verticalmente
-    public void verticalFlip(Image im, int x, int y, int dimension, GraphicsContext gc2) {
+    public void verticalFlip(Image im, int x, int y, int pixels, GraphicsContext gc2) {
+        //permite que la imagen se pueda editar
         imageView = new ImageView(im);
         SnapshotParameters snap = new SnapshotParameters();
-        snap.setViewport(new Rectangle2D(x, y, dimension, dimension));
+        //selecciona el bloque que se va a voltear
+        snap.setViewport(new Rectangle2D(x, y, pixels, pixels));
         im = imageView.snapshot(snap, null);
-        gc2.drawImage(im, 0, 0, dimension, dimension, x + dimension, y, -dimension, dimension);
+        //voltea la imagen
+        gc2.drawImage(im, 0, 0, pixels, pixels, x + pixels, y, -pixels, pixels);
     }
 
     //Metodo que voltea horizontalmente
-    public void horizontalFlip(Image im, int x, int y, int dimension, GraphicsContext gc2) {
+    public void horizontalFlip(Image im, int x, int y, int pixels, GraphicsContext gc2) {
+        //permite que la imagen se pueda editar
         imageView = new ImageView(im);
         SnapshotParameters snap = new SnapshotParameters();
-        snap.setViewport(new Rectangle2D(x, y, dimension, dimension));
+        //selecciona el bloque que se va a voltear
+        snap.setViewport(new Rectangle2D(x, y, pixels, pixels));
         im = imageView.snapshot(snap, null);
-        gc2.drawImage(im, 0, 0, dimension, dimension, x, y + dimension, dimension, -dimension);
+        //voltea la imagen
+        gc2.drawImage(im, 0, 0, pixels, pixels, x, y + pixels, pixels, -pixels);
     }
 
-    public void delete(GraphicsContext gc2, int x, int y, int dimension) {
+    //metodo que elimina la imagen 
+    public void delete(GraphicsContext gc2, int x, int y, int pixels) {
         gc2.setFill(Color.WHITE);
         gc2.setStroke(Color.CYAN);
-        gc2.fillRect(x, y, dimension, dimension);
-        gc2.strokeRect(x, y, dimension, dimension);
+        gc2.fillRect(x, y, pixels, pixels);
+        gc2.strokeRect(x, y, pixels, pixels);
     }
-    
+
+    //metodo que convierte la imagen a bytes
     public byte[] convertImage(Image image) {
         BufferedImage bytesImage = SwingFXUtils.fromFXImage(image, null);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] bytesArray = null;
         try {
             ImageIO.write(bytesImage, "png", baos);
+            //coloca los bytes de la imagen en un arreglo de bytes
             bytesArray = baos.toByteArray();
             baos.close();
             return bytesArray;

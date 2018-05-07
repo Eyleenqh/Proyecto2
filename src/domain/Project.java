@@ -11,23 +11,38 @@ import java.io.Serializable;
  * @author Steven
  * @author Eyleen
  */
-public class Project implements Serializable {
+public abstract class Project implements Serializable, Cloneable {
 
+    //atributos
     private byte[] image;
     private byte[] useImage;
-    private int dimension;
+    private int pixels;
     private int sizeMosaic;
+    private boolean[][] logicMatrix;
 
+    //constructores
     public Project() {
+        this.image = null;
+        this.useImage = null;
+        this.pixels = 0;
+        this.sizeMosaic = 0;
+        this.logicMatrix = null;
     }
 
-    public Project(byte[] image, byte[] useImage, int dimension, int sizeMosaic) {
+    public Project(byte[] image, byte[] useImage, int dimension, int sizeMosaic, boolean[][] logicMatrix) {
         this.image = image;
         this.useImage = useImage;
-        this.dimension = dimension;
+        this.pixels = dimension;
         this.sizeMosaic = sizeMosaic;
+        this.logicMatrix = logicMatrix;
     }
 
+    //metodo de clonado
+    public Project clone() throws CloneNotSupportedException {
+        return (Project) super.clone();
+    }
+
+    //metodos accesores
     public byte[] getImage() {
         return image;
     }
@@ -44,12 +59,12 @@ public class Project implements Serializable {
         this.useImage = useImage;
     }
 
-    public int getDimension() {
-        return dimension;
+    public int getPixels() {
+        return pixels;
     }
 
-    public void setDimension(int dimension) {
-        this.dimension = dimension;
+    public void setPixels(int pixels) {
+        this.pixels = pixels;
     }
 
     public int getSizeMosaic() {
@@ -60,4 +75,11 @@ public class Project implements Serializable {
         this.sizeMosaic = sizeMosaic;
     }
 
+    public boolean[][] getLogicMatrix() {
+        return logicMatrix;
+    }
+
+    public void setLogicMatrix(boolean[][] logicMatrix) {
+        this.logicMatrix = logicMatrix;
+    }
 }
